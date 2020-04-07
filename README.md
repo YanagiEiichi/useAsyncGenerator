@@ -10,7 +10,7 @@ const MyComponent = () => {
     yield <Loading />;
     try {
       let data = await ajax('api');
-      yield data.map(raw => <MyItem {...props} />);
+      yield data.map((props) => <MyItem {...props} />);
     } catch (error) {
       yield <ErrorDisplay error={error} />;
     }
