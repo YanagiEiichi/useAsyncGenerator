@@ -4,6 +4,7 @@
             "esnext"
         ],
         "outDir": "dist",
-        "declaration": true
+        "declaration": true,
+        "sourceMap": true
     }
 }
