@@ -1,20 +1,12 @@
 {
   "name": "use-async-generator",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Accept an async generator that may yield for state update.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc",
-    "prepare": "tsc"
-  },
+  "main": "src/index.js",
   "author": "admin@web-tinker.com",
   "license": "MIT",
   "dependencies": {
     "@types/react": "^16.8.0",
     "react": "^16.8.0"
-  },
-  "devDependencies": {
-    "typescript": "^3.8.3"
   }
 }
