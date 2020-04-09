@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 function useAsyncGenerator(aGen, deps) {
     // Type assertion.
-    if (typeof aGen !== 'function') throw new Error('`aGen` can only be accept an async generator function');
+    if (typeof aGen !== 'function') throw new TypeError('`aGen` can only be accept an async generator function');
 
     // Create a state tuple to store the yielded state value.
     var tuple = useState();
@@ -22,6 +22,10 @@ function useAsyncGenerator(aGen, deps) {
         var it;
         try {
             it = aGen();
+            // Type assertion.
+            if (!it || typeof it.next !== 'function') {
+                throw TypeError('Result of the `aGen` is not an Iterator');
+            }
         } catch (error) {
             // Any generator function or async function never throw on call directly,
             // so it may not be an expect type, catch defensively the exception.
@@ -30,32 +34,41 @@ function useAsyncGenerator(aGen, deps) {
         }
 
         // The for-await main loop.
-        var loop = function (result) {
-            // Abort, if component cleand up.
-            if (died) return;
-            // Abort, if iterator done （return in the generator function).
-            if (result && result.done) return;
-            // Now, result.done is a false or any js false value, update react component state with value.
-            if (result) tuple[1](result.value);
-            // Call it.next()
-            var maybeThenable;
+        var loop = function () {
             try {
-                maybeThenable = it.next();
+                var what = it.next();
+                // Check thenable result.
+                if (what && typeof what.then === 'function') {
+                    what.then(resultHandler, errorHandler);
+                } else {
+                    // Compatible with non-async generator or other generator-like.
+                    resultHandler(what);
+                }
             } catch (error) {
                 // The async iterator never throw on it.next() call directly,
                 // so it may not be async iterator, catch defensively the exception.
                 errorHandler(error);
                 return;
             }
-            // Next
-            if (maybeThenable && typeof maybeThenable.then === 'function') {
-                maybeThenable.then(loop, errorHandler);
-            } else {
-                // Compatible with non-async generator or other generator-like.
-                // TODO: defend stack overflow cases such as `aGen` is () => { next: () => void };
-                loop(maybeThenable);
-            }
         };
+        var resultHandler = function (result) {
+            // Abort, if component cleand up.
+            if (died) return;
+            // Type assertion.
+            if (result instanceof Object) {
+                if (result.done) {
+                    // Abort, if iterator done (generator function has returned or thrown).
+                } else {
+                    // A new state value is yielded from generator function, update react component state now.
+                    tuple[1](result.value);
+                    // Wait next.
+                    loop();
+                }
+            } else {
+                // Abort, if result not an object.
+                errorHandler(new TypeError('Iterator result type ' + (typeof result) + ' is not an object'));
+            }
+        }
         // Start main loop.
         loop();
 
