@@ -1,6 +1,6 @@
 {
   "name": "use-async-generator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Accept an async generator that may yield for state update.",
   "main": "src/index.js",
   "author": "admin@web-tinker.com",
@@ -8,5 +8,13 @@
   "dependencies": {
     "@types/react": "^16.8.0",
     "react": "^16.8.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YanagiEiichi/useAsyncGenerator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YanagiEiichi/useAsyncGenerator/issues"
+  },
+  "homepage": "https://github.com/YanagiEiichi/useAsyncGenerator#readme"
 }
