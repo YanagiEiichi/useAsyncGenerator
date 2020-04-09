@@ -1,13 +1,23 @@
 import { useState, useEffect } from 'react';
 
 function useAsyncGenerator(aGen, deps) {
+    // Type assertion.
     if (typeof aGen !== 'function') throw new Error('`aGen` can only be accept an async generator function');
+
+    // Create a state tuple to store the yielded state value.
     var tuple = useState();
+
+    // Put all logic in useEffect hook and set correct deps,
+    // call only once async generator for same deps.
     useEffect(function () {
         var died = false;
+
+        // Define an error handler.
+        // QUESTION: how to handle async errors better?
         var errorHandler = function (error) {
             if (console && typeof console.error === 'function') console.error(error);
         };
+
         // Start the async task.
         var it;
         try {
@@ -18,7 +28,8 @@ function useAsyncGenerator(aGen, deps) {
             errorHandler(error);
             return;
         }
-        // The for-await main loop
+
+        // The for-await main loop.
         var loop = function (result) {
             // Abort, if component cleand up.
             if (died) return;
@@ -40,14 +51,22 @@ function useAsyncGenerator(aGen, deps) {
             if (maybeThenable && typeof maybeThenable.then === 'function') {
                 maybeThenable.then(loop, errorHandler);
             } else {
+                // Compatible with non-async generator or other generator-like.
+                // TODO: defend stack overflow cases such as `aGen` is () => { next: () => void };
                 loop(maybeThenable);
             }
         };
+        // Start main loop.
         loop();
+
+        // Marked as died if component cleaned up.
         return function () {
             died = true;
         };
     }, deps);
+
+    // Return the current state value.
+    // NOTE: it's inevitably undefined for the first time, because useEffect hook is async.
     return tuple[0];
 }
 
