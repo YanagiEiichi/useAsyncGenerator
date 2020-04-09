@@ -1,16 +1,3 @@
-## useAsyncGenerator
-
-Accept an async generator that may yield for state update.
-
-## Install
-
-```bash
-npm install use-async-generator --save
-```
-
-## Demo
-
-```tsx
 import React from 'react';
 import { Loading, getGeoLocation, ResultDisplay, ErrorDisplay } from './components';
 import useAsyncGenerator from 'use-async-generator';
@@ -43,4 +30,3 @@ const Demo = () => {
 };
 
 export default Demo;
-```
