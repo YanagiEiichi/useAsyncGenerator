@@ -5,7 +5,10 @@ import useAsyncGenerator from 'use-async-generator';
 
 const getGeoLocation = () => {
   return new Promise<Position>((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      timeout: 3000,
+      maximumAge: 5000
+    });
   });
 }
 
@@ -23,15 +26,19 @@ const ResultDisplay = ({ data }: { data: any }) => {
 
 const Demo = () => {
   let content = useAsyncGenerator(async function* () {
+
     yield <Loading />;
+
     try {
       let geo = await getGeoLocation();
       let { latitude, longitude } = geo.coords;
       let json = JSON.stringify({ latitude, longitude }, null, 2);
+
       yield <ResultDisplay data={json} />;
     } catch (error) {
       yield <ErrorDisplay error={error} />;
     }
+
   }, []);
 
   return (
