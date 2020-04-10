@@ -1,6 +1,6 @@
 {
   "name": "use-async-generator",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Accept an async generator that may yield for state update.",
   "main": "src/index.js",
   "author": "admin@web-tinker.com",
