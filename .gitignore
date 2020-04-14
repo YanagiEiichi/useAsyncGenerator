@@ -4,5 +4,3 @@ package-lock.json
 !.gitignore
 !.npmignore
 !.vscode
-
-demo
