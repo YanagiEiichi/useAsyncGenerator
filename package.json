@@ -1,6 +1,6 @@
 {
   "name": "use-async-generator",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "React hook, accept an async generator that may yield for state update.",
   "main": "src/index.js",
   "author": "admin@web-tinker.com",
