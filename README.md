@@ -1,6 +1,6 @@
 ## useAsyncGenerator
 
-Accept an async generator that may yield for state update.
+React hook, accept an async generator that may yield for state update.
 
 ## Install
 
