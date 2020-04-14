@@ -1,4 +1,6 @@
-import { DependencyList } from 'react';
+/// <reference lib="es2018.asyncgenerator" />
+
+type DependencyList = ReadonlyArray<any>;
 
 /**
  * Accept an async generator, that may yield for state update.

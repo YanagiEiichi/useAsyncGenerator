@@ -5,10 +5,8 @@
   "main": "src/index.js",
   "author": "admin@web-tinker.com",
   "license": "MIT",
-  "dependencies": {
-    "@types/react": "^16.8.0"
-  },
   "devDependencies": {
+    "@types/react": "^16.8.0",
     "react": "^16.8.0"
   },
   "repository": {
